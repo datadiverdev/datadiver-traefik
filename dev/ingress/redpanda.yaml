@@ -11,6 +11,6 @@ spec:
       kind: Rule
       services:
         - kind: Service
-          name: redpanda-console-dev
+          name: redpanda-dev-console
           namespace: redpanda
           port: 8080
