@@ -492,9 +492,7 @@ globalArguments:
 # All available options available on https://docs.traefik.io/reference/static-configuration/cli/
 ## Use curly braces to pass values: `helm install --set="additionalArguments={--providers.kubernetesingress.ingressclass=traefik-internal,--log.level=DEBUG}"`
 additionalArguments:
-#  - "--entryPoints.airflow.address=:7070/tcp"
   - "--entryPoints.redpanda.address=:8080/tcp"
-#  - "--entryPoints.minio.address=:9090/tcp"
 #  - "--providers.kubernetesingress.ingressclass=traefik-internal"
 #  - "--log.level=DEBUG"
 
@@ -581,23 +579,11 @@ ports:
     #   trustedIPs: []
     #   insecure: false
 
-#  airflow:
-#    port: 7070
-#    expose: true
-#    exposedPort: 7070
-#    protocol: TCP
-#
   redpanda:
     port: 8080
     expose: true
     exposedPort: 8080
     protocol: TCP
-#
-#  minio:
-#    port: 9090
-#    expose: true
-#    exposedPort: 9090
-#    protocol: TCP
 
   websecure:
     ## Enable this entrypoint as a default entrypoint. When a service doesn't explicity set an entrypoint it will only use this entrypoint.
@@ -774,7 +760,7 @@ persistence:
   #  existingClaim: ""
   accessMode: ReadWriteOnce
   size: 128Mi
-  # storageClass: ""
+  storageClass: directpv-min-io
   # volumeName: ""
   path: /data
   annotations: { }
@@ -850,7 +836,8 @@ affinity: { }
 #            app.kubernetes.io/instance: '{{ .Release.Name }}-{{ .Release.Namespace }}'
 #        topologyKey: kubernetes.io/hostname
 
-nodeSelector: { }
+nodeSelector:
+  service.mesh: "true"
 tolerations: [ ]
 topologySpreadConstraints: [ ]
 # # This example topologySpreadConstraints forces the scheduler to put traefik pods
